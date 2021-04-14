@@ -1,0 +1,102 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "analyze": "ANALYZE=1 umi build",
+    "postinstall": "umi generate tmp",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "lint": "umi g tmp && npm run lint:js && npm run lint:style && npm run lint:prettier",
+    "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
+    "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
+    "lint:prettier": "prettier --check \"src/**/*\" --end-of-line auto",
+    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.less": "stylelint --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write"
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "checkFiles": [
+    "src/**/*.js*",
+    "src/**/*.ts*",
+    "src/**/*.less",
+    "config/**/*.js*",
+    "scripts/**/*.js"
+  ],
+  "create-umi": {
+    "ignoreScript": [
+      "docker*",
+      "functions*",
+      "site",
+      "generateMock"
+    ],
+    "ignoreDependencies": [
+      "netlify*",
+      "serverless"
+    ],
+    "ignore": [
+      ".dockerignore",
+      ".git",
+      ".github",
+      ".gitpod.yml",
+      "CODE_OF_CONDUCT.md",
+      "Dockerfile",
+      "Dockerfile.*",
+      "lambda",
+      "LICENSE",
+      "netlify.toml",
+      "README.*.md",
+      "azure-pipelines.yml",
+      "docker",
+      "CNAME",
+      "create-umi"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/aliyun-theme": "^0.0.4",
+    "@ant-design/icons": "^4.0.0",
+    "@ant-design/pro-layout": "^6.5.0",
+    "antd": "^4.15.0",
+    "react": "17.x",
+    "react-dev-inspector": "^1.5.3",
+    "react-dom": "17.x",
+    "umi": "^3.4.1",
+    "umi-request": "^1.0.8"
+  },
+  "devDependencies": {
+    "@ant-design/pro-cli": "^1.0.18",
+    "@types/history": "^4.7.2",
+    "@types/lodash": "^4.14.144",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@umijs/fabric": "^2.5.1",
+    "@umijs/plugin-esbuild": "^1.0.1",
+    "@umijs/preset-ant-design-pro": "^1.2.0",
+    "@umijs/preset-react": "^1.4.8",
+    "@umijs/test": "^3.4.8",
+    "@umijs/yorkie": "^2.0.3",
+    "eslint": "^7.1.0",
+    "lint-staged": "^10.0.0",
+    "prettier": "^2.0.1",
+    "stylelint": "^13.12.0",
+    "typescript": "^4.1.2",
+    "yorkie": "^2.0.0"
+  }
+}
