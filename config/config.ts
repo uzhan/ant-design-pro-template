@@ -1,6 +1,5 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
-import aliyunTheme from '@ant-design/aliyun-theme';
 import proxy from './proxy';
 import routes from './routes';
 
@@ -31,7 +30,6 @@ export default defineConfig({
   // umi routes: https://umijs.org/docs/routing
   routes,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
-  theme: aliyunTheme,
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
