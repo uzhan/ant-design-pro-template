@@ -3,7 +3,7 @@
  *
  * @see You can view component api by: https://github.com/ant-design/ant-design-pro-layout
  */
- import type {
+import type {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
   Settings,

@@ -3,7 +3,7 @@ import request from '@/utils/request';
 export async function fakeAccountLogin(data: any) {
   return request('/api/login/account', {
     method: 'POST',
-    data
+    data,
   });
 }
 

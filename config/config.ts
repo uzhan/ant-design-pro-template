@@ -9,7 +9,7 @@ export default defineConfig({
   hash: true,
   antd: {},
   dva: {
-    hmr: true //是否启用 dva 的 热更新
+    hmr: true, //是否启用 dva 的 热更新
   },
   history: {
     type: 'browser',

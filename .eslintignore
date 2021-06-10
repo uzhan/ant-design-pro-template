@@ -2,3 +2,5 @@
 /scripts
 /config
 .history
+.commitlintrc.js
+commitlint.config.js
