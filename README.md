@@ -7,7 +7,7 @@
 Clone the project,
 
 ````bash
-$ git clone https://github.com/Teachers-Tony/miniprogram-taro-template.git
+$ git clone https://github.com/Teachers-Tony/ant-design-pro-template.git
 
 Install dependencies,
 
