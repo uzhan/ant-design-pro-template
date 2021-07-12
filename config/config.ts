@@ -2,8 +2,11 @@
 import { defineConfig } from 'umi';
 import proxy from './proxy';
 import routes from './routes';
+import defineDev from '../.env.development';
+import definePro from '../.env.production';
 
-const { REACT_APP_ENV } = process.env;
+const { NODE_ENV, REACT_APP_ENV } = process.env;
+const define = NODE_ENV === 'development' ? defineDev : NODE_ENV === 'production' ? definePro : {};
 
 export default defineConfig({
   hash: true,
@@ -14,6 +17,7 @@ export default defineConfig({
   history: {
     type: 'browser',
   },
+  define,
   locale: {
     // default zh-CN
     default: 'zh-CN',
