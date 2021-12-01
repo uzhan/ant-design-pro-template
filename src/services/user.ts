@@ -1,20 +1,14 @@
-import request from '@/utils/request';
+// @ts-ignore
+/* eslint-disable */
+import { request } from 'umi';
 
-export async function query(): Promise<any> {
-  return request('/api/users');
-}
-
-export async function queryCurrent(): Promise<any> {
-  return request('/api/users/info');
-}
-
-export async function updatePassword(data: any): Promise<any> {
-  return request('/api/auth/modify-password', {
-    method: 'UPDATE',
-    data,
+/** 获取当前的用户 GET /api/currentUser */
+export async function currentUser(options?: { [key: string]: any }) {
+  return request<{
+    data: API.CurrentUser;
+  }>('/web/my/user/info', {
+    prefix: process.env.REACT_APP_ADMIN_API,
+    method: 'GET',
+    ...(options || {}),
   });
-}
-
-export async function queryNotices(): Promise<any> {
-  return request('/api/notices');
 }

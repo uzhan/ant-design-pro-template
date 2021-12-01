@@ -14,15 +14,22 @@ export type HeaderSearchProps = {
   className?: string;
   placeholder?: string;
   options: AutoCompleteProps['options'];
-  defaultOpen?: boolean;
-  open?: boolean;
+  defaultVisible?: boolean;
+  visible?: boolean;
   defaultValue?: string;
   value?: string;
 };
 
 const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
-  const { className, defaultValue, onVisibleChange, placeholder, open, defaultOpen, ...restProps } =
-    props;
+  const {
+    className,
+    defaultValue,
+    onVisibleChange,
+    placeholder,
+    visible,
+    defaultVisible,
+    ...restProps
+  } = props;
 
   const inputRef = useRef<Input | null>(null);
 
@@ -31,15 +38,14 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     onChange: props.onChange,
   });
 
-  const [searchMode, setSearchMode] = useMergedState(defaultOpen ?? false, {
-    value: props.open,
+  const [searchMode, setSearchMode] = useMergedState(defaultVisible ?? false, {
+    value: props.visible,
     onChange: onVisibleChange,
   });
 
   const inputClass = classNames(styles.input, {
     [styles.show]: searchMode,
   });
-
   return (
     <div
       className={classNames(className, styles.headerSearch)}
@@ -67,14 +73,11 @@ const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
         key="AutoComplete"
         className={inputClass}
         value={value}
-        style={{
-          height: 28,
-          marginTop: -6,
-        }}
         options={restProps.options}
         onChange={setValue}
       >
         <Input
+          size="small"
           ref={inputRef}
           defaultValue={defaultValue}
           aria-label={placeholder}

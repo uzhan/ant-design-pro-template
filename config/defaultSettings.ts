@@ -1,23 +1,21 @@
-import { Settings as ProSettings } from '@ant-design/pro-layout';
+import { Settings as LayoutSettings } from '@ant-design/pro-layout';
 
-type DefaultSettings = Partial<ProSettings> & {
-  pwa: boolean;
-};
-
-const proSettings: DefaultSettings = {
-  navTheme: 'dark',
+const Settings: LayoutSettings & {
+  pwa?: boolean;
+  logo?: string;
+} = {
+  navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
-  layout: 'side',
+  primaryColor: '#2d66bd',
+  layout: 'mix',
   contentWidth: 'Fluid',
-  fixedHeader: true,
+  fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '后台管理系统',
   pwa: false,
+  logo: '//assets.uphicoo.com/images/admin-template/xcx-logo.png',
   iconfontUrl: '',
 };
 
-export type { DefaultSettings };
-
-export default proSettings;
+export default Settings;

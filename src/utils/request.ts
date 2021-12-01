@@ -1,11 +1,11 @@
-/**
- * request 网络请求工具
- * 更详细的 api 文档: https://github.com/umijs/umi-request
- */
-import { history } from 'umi';
-import { extend } from 'umi-request';
-import { stringify } from 'querystring';
 import { message, notification } from 'antd';
+import { stringify } from 'qs';
+import { history } from 'umi';
+import Cookies from 'js-cookie';
+import type { RequestOptionsInit } from 'umi-request';
+import type { RequestConfig } from 'umi';
+
+const loginPath = '/user/login';
 
 const codeMessage: any = {
   200: '服务器成功返回请求的数据。',
@@ -28,8 +28,11 @@ const codeMessage: any = {
 /**
  * 异常处理程序
  */
-const errorHandler = (error: { response: Response }): Response => {
-  const { response } = error;
+const errorHandler = (error: {
+  response: Response;
+  customizeError?: { code: string; message: string };
+}) => {
+  const { response, customizeError } = error;
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
@@ -38,63 +41,71 @@ const errorHandler = (error: { response: Response }): Response => {
       message: `请求错误 ${status}: ${url}`,
       description: errorText,
     });
+    return Promise.reject();
+  } else if (customizeError) {
+    message.error(`${customizeError.code}: ${customizeError.message}`);
+    return Promise.reject(customizeError.code);
   } else if (!response) {
     notification.error({
       description: '您的网络发生异常，无法连接服务器',
       message: '网络异常',
     });
+    return Promise.reject();
   }
   return response;
 };
 
-/**
- * 配置request请求时的默认参数
- */
-const request = extend({
-  errorHandler, // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
-  prefix: process.env.REACT_APP_BASE_API,
-});
-
-/**
- * 此处为拦截器，每次发送请求之前判断能否取到token
- */
-
-// @ts-ignore
-request.interceptors.request.use(async (url, options) => {
-  const headers = {
-    'Content-Type': 'application/json; charset=UTF-8',
-    Accept: 'application/json, text/plain, */*',
-    Authorization: localStorage.getItem('token') || '',
+// 请求前拦截
+const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
+  const token = Cookies.get('token') || '';
+  const userid = Cookies.get('userid') || '';
+  const authHeader = {
+    'user-auth-token': token,
+    'user-id': userid,
+    'Content-Type': 'application/json',
   };
+
   return {
     url,
-    options: { ...options, headers },
+    options: {
+      ...options,
+      interceptors: true,
+      headers: authHeader,
+    },
   };
-});
+};
 
-// response 拦截器 自定义处理错误
-request.interceptors.response.use(async (response: Response) => {
-  // TODO： HTTP 200 Enter the custom error handling
+// 响应后拦截
+const responseInterceptors = async (
+  response: Response,
+): Promise<RequestResponseType<Response> | Response> => {
   if (response.status === 200) {
     const data = await response.clone().json();
+
     // 此处code码修改为你自己项目使用的code码即可！！
     if (data.code !== '000000') {
       if (data.code === '100000') {
-        message.error('登录已过期，请重新登录！');
         history.replace({
-          pathname: '/user/login',
+          pathname: loginPath,
           search: stringify({
             redirect: window.location.href,
           }),
         });
-        localStorage.removeItem('token');
-      } else {
-        message.error(`${data.code}：${data.message}`);
+        Cookies.remove('token');
+        Cookies.remove('userid');
       }
-    }
-  }
-  return response;
-});
 
-export default request;
+      return Promise.reject({ customizeError: { code: data.code, message: data.message } });
+    }
+
+    return Promise.resolve(data);
+  } else {
+    return response;
+  }
+};
+
+export const request: RequestConfig = {
+  errorHandler,
+  requestInterceptors: [authHeaderInterceptor],
+  responseInterceptors: [responseInterceptors],
+};

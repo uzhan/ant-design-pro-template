@@ -1,34 +1,57 @@
-# ant-design-pro-template
+# Ant Design Pro
 
-> 项目基于 ant-design-pro 精简了部分功能，只保留了基础部分，加入了代码校验，规范约束等辅助工具
+This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
 
-## Getting Started
+## Environment Prepare
 
-Clone the project,
-
-````bash
-$ git clone https://github.com/Teachers-Tony/ant-design-pro-template.git
-
-Install dependencies,
+Install `node_modules`:
 
 ```bash
-$ yarn install
-````
-
-Start the dev server,
-
-```bash
-$ yarn start
+npm install
 ```
 
-Build dependencies,
+or
 
 ```bash
-$ yarn build
+yarn
 ```
 
-## License
+## Provided Scripts
 
-[MIT](https://github.com/Teachers-Tony/ant-design-pro-template/blob/main/LICENSE)
+Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
 
-Copyright (c) 2021-present BaiHuaYang
+Scripts provided in `package.json`. It's safe to modify or add additional script:
+
+### Start project
+
+```bash
+npm start
+```
+
+### Build project
+
+```bash
+npm run build
+```
+
+### Check code style
+
+```bash
+npm run lint
+```
+
+You can also use script to auto fix some lint error:
+
+```bash
+npm run lint:fix
+```
+
+### Test code
+
+```bash
+npm test
+```
+
+## More
+
+You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).

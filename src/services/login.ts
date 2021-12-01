@@ -1,12 +1,20 @@
-import request from '@/utils/request';
+// @ts-ignore
+/* eslint-disable */
+import { request } from 'umi';
 
-export async function fakeAccountLogin(data: any) {
-  return request('/api/login/account', {
+/** 退出登录接口 POST /api/login/outLogin */
+export async function outLogin(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/login/outLogin', {
     method: 'POST',
-    data,
+    ...(options || {}),
   });
 }
 
-export async function getFakeCaptcha(mobile: string) {
-  return request(`/api/login/captcha?mobile=${mobile}`);
+/** 登录接口 POST /api/login/account */
+export async function login(data: API.LoginParams, options?: { [key: string]: any }) {
+  return request<RequestResponseType<API.LoginResult>>('/api/login', {
+    method: 'POST',
+    data,
+    ...(options || {}),
+  });
 }

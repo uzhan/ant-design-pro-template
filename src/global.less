@@ -13,6 +13,9 @@ body,
 .ant-layout {
   min-height: 100vh;
 }
+.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
+  left: unset;
+}
 
 canvas {
   display: block;
@@ -27,6 +30,12 @@ body {
 ul,
 ol {
   list-style: none;
+}
+.fr {
+  float: right;
+}
+.mb15 {
+  margin-bottom: 15px;
 }
 
 @media (max-width: @screen-xs) {
@@ -46,7 +55,7 @@ ol {
   }
 }
 
-// 兼容IE11
+// Compatible with IE11
 @media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
   body .ant-design-pro > .ant-layout {
     min-height: 100vh;
