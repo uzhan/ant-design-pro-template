@@ -67,7 +67,7 @@ if (pwa) {
           reloadSW();
         }}
       >
-        {'刷新'}
+        {'刷新页面'}
       </Button>
     );
     notification.open({
