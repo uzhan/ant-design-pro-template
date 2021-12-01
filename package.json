@@ -34,6 +34,24 @@
     "test:component": "umi test ./src/components",
     "tsc": "tsc --noEmit"
   },
+  "keywords": [
+    "react",
+    "antd",
+    "eslint",
+    "antdpro",
+    "taro-stylelint",
+    "antd-template",
+    "redux",
+    "ant-design-pro",
+    "ant-design-pro-template"
+  ],
+  "author": "BaiHuaYang",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && npm run precommit",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "lint-staged": {
     "**/*.less": "stylelint --syntax less",
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
@@ -46,6 +64,13 @@
     "last 2 versions",
     "not ie <= 10"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Teachers-Tony/ant-design-pro-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Teachers-Tony/ant-design-pro-template/issues"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
     "@ant-design/pro-descriptions": "^1.6.8",
