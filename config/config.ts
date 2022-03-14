@@ -1,14 +1,20 @@
 // https://umijs.org/config/
+import 'dotenv/config';
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
-import defineDev from '../.env.development';
-import definePro from '../.env.production';
 
-const { NODE_ENV, REACT_APP_ENV } = process.env;
-const define = NODE_ENV === 'development' ? defineDev : NODE_ENV === 'production' ? definePro : {};
+const { REACT_APP_ENV } = process.env;
 
+const reg = /^(REACT_APP_)/;
+
+const define = Object.keys(process.env)
+  .filter((key) => reg.test(key))
+  .reduce((env, key) => {
+    env[key] = process.env[key];
+    return env;
+  }, {});
 
 export default defineConfig({
   hash: true,
@@ -17,7 +23,7 @@ export default defineConfig({
     hmr: true,
   },
   devServer: {
-    port: 9530
+    port: 9530,
   },
   layout: {
     // https://umijs.org/zh-CN/plugins/plugin-layout
