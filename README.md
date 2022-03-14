@@ -2,6 +2,10 @@
 
 基于 `antd pro v5` 增加工具库，并移除`i18n`。用法与`antd pro`一致
 
+## Config
+
+所有接口地址配置文件`.env`，命名格式`REACT_APP_**`。
+
 ## Environment Prepare
 
 Install `node_modules`:
