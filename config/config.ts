@@ -5,6 +5,8 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 
+const CompressionPlugin = require('compression-webpack-plugin');
+
 const { REACT_APP_ENV } = process.env;
 
 const reg = /^(REACT_APP_)/;
@@ -62,4 +64,15 @@ export default defineConfig({
   mfsu: {},
   webpack5: {},
   exportStatic: {},
+  chainWebpack(memo) {
+    memo.plugin('CompressionPlugin').use(
+      new CompressionPlugin({
+        filename: '[path][base].gz', // 目标资源名称
+        algorithm: 'gzip',
+        test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i, // 处理所有匹配此 {RegExp} 的资源
+        threshold: 10240, // 只处理比这个值大的资源。按字节计算
+        minRatio: 0.8, // 只有压缩率比这个值小的资源才会被处理
+      }),
+    );
+  },
 });
