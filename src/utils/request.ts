@@ -3,7 +3,6 @@ import { stringify } from 'qs';
 import { history } from 'umi';
 import Cookies from 'js-cookie';
 import type { RequestOptionsInit } from 'umi-request';
-import type { RequestConfig } from 'umi';
 
 const loginPath = '/user/login';
 
@@ -43,7 +42,9 @@ const errorHandler = (error: {
     });
     return Promise.reject();
   } else if (customizeError) {
-    message.error(`${customizeError.code}: ${customizeError.message}`);
+    // 登录过期或未登录不展示错误信息
+    if (customizeError.code !== '110001')
+      message.error(`${customizeError.code}: ${customizeError.message}`);
     return Promise.reject(customizeError.code);
   } else if (!response) {
     notification.error({
@@ -58,10 +59,8 @@ const errorHandler = (error: {
 // 请求前拦截
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   const token = Cookies.get('token') || '';
-  const userid = Cookies.get('userid') || '';
   const authHeader = {
-    'user-auth-token': token,
-    'user-id': userid,
+    Authorization: token,
     'Content-Type': 'application/json',
   };
 
@@ -76,25 +75,25 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
 };
 
 // 响应后拦截
-const responseInterceptors = async (
-  response: Response,
-): Promise<RequestResponseType<Response> | Response> => {
+const responseInterceptors = async (response: Response): Promise<Response> => {
   if (response.status === 200) {
     const data = await response.clone().json();
 
     // 此处code码修改为你自己项目使用的code码即可！！
     if (data.code !== '000000') {
-      if (data.code === '100000') {
-        history.replace({
-          pathname: loginPath,
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
-        Cookies.remove('token');
-        Cookies.remove('userid');
+      if (data.code === '110001') {
+        const { query = {}, pathname } = history.location;
+        const { redirect } = query;
+        if (window.location.pathname !== loginPath && !redirect) {
+          Cookies.remove('token');
+          history.replace({
+            pathname: loginPath,
+            search: stringify({
+              redirect: pathname,
+            }),
+          });
+        }
       }
-
       return Promise.reject({ customizeError: { code: data.code, message: data.message } });
     }
 
@@ -104,8 +103,10 @@ const responseInterceptors = async (
   }
 };
 
-export const request: RequestConfig = {
+export default {
   errorHandler,
   requestInterceptors: [authHeaderInterceptor],
   responseInterceptors: [responseInterceptors],
+  prefix: process.env.REACT_APP_BASE_API,
+  paramsSerializer: (params: any) => stringify(params),
 };
